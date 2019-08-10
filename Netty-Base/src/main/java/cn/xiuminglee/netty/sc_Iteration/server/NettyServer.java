@@ -1,5 +1,9 @@
 package cn.xiuminglee.netty.sc_Iteration.server;
 
+import cn.xiuminglee.netty.sc_Iteration.codec.PacketDecoder;
+import cn.xiuminglee.netty.sc_Iteration.codec.PacketEncoder;
+import cn.xiuminglee.netty.sc_Iteration.server.handler.LoginRequestHandler;
+import cn.xiuminglee.netty.sc_Iteration.server.handler.MessageRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -32,7 +36,10 @@ public class NettyServer {
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected void initChannel(NioSocketChannel ch) {
-                        ch.pipeline().addLast(new ServerHandler());
+                        ch.pipeline().addLast(new PacketDecoder());
+                        ch.pipeline().addLast(new LoginRequestHandler());
+                        ch.pipeline().addLast(new MessageRequestHandler());
+                        ch.pipeline().addLast(new PacketEncoder());
                     }
                 });
 

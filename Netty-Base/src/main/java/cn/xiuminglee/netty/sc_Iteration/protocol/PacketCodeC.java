@@ -1,5 +1,6 @@
 package cn.xiuminglee.netty.sc_Iteration.protocol;
 
+import cn.xiuminglee.netty.sc_Iteration.protocol.command.Command;
 import cn.xiuminglee.netty.sc_Iteration.protocol.packet.LoginRequestPacket;
 import cn.xiuminglee.netty.sc_Iteration.protocol.packet.LoginResponsePacket;
 import cn.xiuminglee.netty.sc_Iteration.protocol.packet.MessageRequestPacket;
@@ -7,15 +8,9 @@ import cn.xiuminglee.netty.sc_Iteration.protocol.packet.MessageResponsePacket;
 import cn.xiuminglee.netty.sc_Iteration.serialize.Serializer;
 import cn.xiuminglee.netty.sc_Iteration.serialize.impl.JSONSerializer;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static cn.xiuminglee.netty.sb_ClientLogin.protocol.command.Command.LOGIN_REQUEST;
-import static cn.xiuminglee.netty.sb_ClientLogin.protocol.command.Command.LOGIN_RESPONSE;
-import static cn.xiuminglee.netty.sc_Iteration.protocol.command.Command.MESSAGE_REQUEST;
-import static cn.xiuminglee.netty.sc_Iteration.protocol.command.Command.MESSAGE_RESPONSE;
 
 /**
  * @Author: Xiuming Lee
@@ -34,31 +29,27 @@ public class PacketCodeC {
 
     private PacketCodeC() {
         packetTypeMap = new HashMap<>();
-        packetTypeMap.put(LOGIN_REQUEST, LoginRequestPacket.class);
-        packetTypeMap.put(LOGIN_RESPONSE, LoginResponsePacket.class);
-        packetTypeMap.put(MESSAGE_REQUEST, MessageRequestPacket.class);
-        packetTypeMap.put(MESSAGE_RESPONSE, MessageResponsePacket.class);
+        packetTypeMap.put(Command.LOGIN_REQUEST, LoginRequestPacket.class);
+        packetTypeMap.put(Command.LOGIN_RESPONSE, LoginResponsePacket.class);
+        packetTypeMap.put(Command.MESSAGE_REQUEST, MessageRequestPacket.class);
+        packetTypeMap.put(Command.MESSAGE_RESPONSE, MessageResponsePacket.class);
 
         serializerMap = new HashMap<>();
         Serializer serializer = new JSONSerializer();
         serializerMap.put(serializer.getSerializerAlogrithm(), serializer);
     }
 
-    public ByteBuf encode(ByteBufAllocator byteBufAllocator, Packet packet) {  // 编码
-        // 1. 创建 ByteBuf 对象
-        ByteBuf byteBuf = byteBufAllocator.ioBuffer();
-        // 2. 序列化 java 对象
+    public void  encode(ByteBuf byteBuf, Packet packet) {  // 编码
+        // 1. 序列化 java 对象
         byte[] bytes = Serializer.DEFAULT.serialize(packet);
 
-        // 3. 实际编码过程
+        // 2. 实际编码过程
         byteBuf.writeInt(MAGIC_NUMBER);
         byteBuf.writeByte(packet.getVersion());
         byteBuf.writeByte(Serializer.DEFAULT.getSerializerAlogrithm());
         byteBuf.writeByte(packet.getCommand());
         byteBuf.writeInt(bytes.length);
         byteBuf.writeBytes(bytes);
-
-        return byteBuf;
     }
 
 
