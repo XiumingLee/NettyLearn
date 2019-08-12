@@ -4,6 +4,7 @@ import cn.xiuminglee.netty.sc_Iteration.client.handler.LoginResponseHandler;
 import cn.xiuminglee.netty.sc_Iteration.client.handler.MessageResponseHandler;
 import cn.xiuminglee.netty.sc_Iteration.codec.PacketDecoder;
 import cn.xiuminglee.netty.sc_Iteration.codec.PacketEncoder;
+import cn.xiuminglee.netty.sc_Iteration.codec.Spliter;
 import cn.xiuminglee.netty.sc_Iteration.protocol.packet.MessageRequestPacket;
 import cn.xiuminglee.netty.sc_Iteration.util.LoginUtil;
 import io.netty.bootstrap.Bootstrap;
@@ -44,6 +45,7 @@ public class NettyClient {
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     public void initChannel(SocketChannel ch) {
+                        ch.pipeline().addLast(new Spliter());
                         ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new LoginResponseHandler());
                         ch.pipeline().addLast(new MessageResponseHandler());
