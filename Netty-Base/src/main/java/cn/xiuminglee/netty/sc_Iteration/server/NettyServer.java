@@ -2,6 +2,7 @@ package cn.xiuminglee.netty.sc_Iteration.server;
 
 import cn.xiuminglee.netty.sc_Iteration.codec.PacketDecoder;
 import cn.xiuminglee.netty.sc_Iteration.codec.PacketEncoder;
+import cn.xiuminglee.netty.sc_Iteration.server.handler.LifeCyCleTestHandler;
 import cn.xiuminglee.netty.sc_Iteration.server.handler.LoginRequestHandler;
 import cn.xiuminglee.netty.sc_Iteration.server.handler.MessageRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
@@ -36,6 +37,7 @@ public class NettyServer {
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected void initChannel(NioSocketChannel ch) {
+                        ch.pipeline().addLast(new LifeCyCleTestHandler());
                         ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new LoginRequestHandler());
                         ch.pipeline().addLast(new MessageRequestHandler());
