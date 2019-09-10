@@ -6,7 +6,6 @@ import cn.xiuminglee.netty.sc_Iteration.codec.PacketDecoder;
 import cn.xiuminglee.netty.sc_Iteration.codec.PacketEncoder;
 import cn.xiuminglee.netty.sc_Iteration.codec.Spliter;
 import cn.xiuminglee.netty.sc_Iteration.protocol.packet.MessageRequestPacket;
-import cn.xiuminglee.netty.sc_Iteration.util.LoginUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -82,15 +81,15 @@ public class NettyClient {
     private static void startConsoleThread(Channel channel) {
         new Thread(() -> {
             while (!Thread.interrupted()) {
-                if (LoginUtil.hasLogin(channel)) { // 判断是否登录
+//                if (LoginUtil.hasLogin(channel)) { // 判断是否登录
                     System.out.println("输入消息发送至服务端: ");
                     Scanner sc = new Scanner(System.in);
                     String line = sc.nextLine();
 
                     MessageRequestPacket packet = new MessageRequestPacket();
                     packet.setMessage(line);
-                    channel.writeAndFlush(packet); // 发送消息,这里没有编码，因为陪在最后的PacketEncoder，会为我们编码
-                }
+                    channel.writeAndFlush(packet); // 发送消息,这里没有编码，因为配置在最后的PacketEncoder，会为我们编码
+//                }
             }
         }).start();
     }

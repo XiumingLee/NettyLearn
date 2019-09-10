@@ -2,6 +2,7 @@ package cn.xiuminglee.netty.sc_Iteration.server.handler;
 
 import cn.xiuminglee.netty.sc_Iteration.protocol.packet.LoginRequestPacket;
 import cn.xiuminglee.netty.sc_Iteration.protocol.packet.LoginResponsePacket;
+import cn.xiuminglee.netty.sc_Iteration.util.LoginUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -22,6 +23,8 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
         loginResponsePacket.setVersion(msg.getVersion());
         if (valid(msg)) {
             loginResponsePacket.setSuccess(true);
+            // 保存登录成功的状态
+            LoginUtil.markAsLogin(ctx.channel());
             System.out.println(LocalDateTime.now() + ": 登录成功!");
         } else {
             loginResponsePacket.setReason("账号密码校验失败");
