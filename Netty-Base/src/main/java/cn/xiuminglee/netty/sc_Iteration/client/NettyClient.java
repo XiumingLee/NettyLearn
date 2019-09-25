@@ -5,7 +5,9 @@ import cn.xiuminglee.netty.sc_Iteration.client.handler.MessageResponseHandler;
 import cn.xiuminglee.netty.sc_Iteration.codec.PacketDecoder;
 import cn.xiuminglee.netty.sc_Iteration.codec.PacketEncoder;
 import cn.xiuminglee.netty.sc_Iteration.codec.Spliter;
+import cn.xiuminglee.netty.sc_Iteration.protocol.packet.LoginRequestPacket;
 import cn.xiuminglee.netty.sc_Iteration.protocol.packet.MessageRequestPacket;
+import cn.xiuminglee.netty.sc_Iteration.util.SessionUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -79,18 +81,36 @@ public class NettyClient {
     }
 
     private static void startConsoleThread(Channel channel) {
+        Scanner sc = new Scanner(System.in);
+        LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
+
         new Thread(() -> {
             while (!Thread.interrupted()) {
-//                if (LoginUtil.hasLogin(channel)) { // 判断是否登录
-                    System.out.println("输入消息发送至服务端: ");
-                    Scanner sc = new Scanner(System.in);
-                    String line = sc.nextLine();
+                if (!SessionUtil.hasLogin(channel)) {
+                    System.out.print("输入用户名登录: ");
+                    String username = sc.nextLine();
+                    loginRequestPacket.setUserName(username);
 
-                    MessageRequestPacket packet = new MessageRequestPacket();
-                    packet.setMessage(line);
-                    channel.writeAndFlush(packet); // 发送消息,这里没有编码，因为配置在最后的PacketEncoder，会为我们编码
-//                }
+                    // 密码使用默认的
+                    loginRequestPacket.setPassword("pwd");
+
+                    // 发送登录数据包
+                    channel.writeAndFlush(loginRequestPacket);
+                    waitForLoginResponse();
+                } else {
+                    String toUserId = sc.next();
+                    String message = sc.next();
+                    channel.writeAndFlush(new MessageRequestPacket(toUserId, message));
+                }
             }
         }).start();
+    }
+
+
+    private static void waitForLoginResponse() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ignored) {
+        }
     }
 }
