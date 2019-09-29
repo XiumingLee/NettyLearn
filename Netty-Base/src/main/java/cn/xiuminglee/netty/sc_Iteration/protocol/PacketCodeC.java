@@ -1,10 +1,7 @@
 package cn.xiuminglee.netty.sc_Iteration.protocol;
 
 import cn.xiuminglee.netty.sc_Iteration.protocol.command.Command;
-import cn.xiuminglee.netty.sc_Iteration.protocol.packet.LoginRequestPacket;
-import cn.xiuminglee.netty.sc_Iteration.protocol.packet.LoginResponsePacket;
-import cn.xiuminglee.netty.sc_Iteration.protocol.packet.MessageRequestPacket;
-import cn.xiuminglee.netty.sc_Iteration.protocol.packet.MessageResponsePacket;
+import cn.xiuminglee.netty.sc_Iteration.protocol.packet.*;
 import cn.xiuminglee.netty.sc_Iteration.serialize.Serializer;
 import cn.xiuminglee.netty.sc_Iteration.serialize.impl.JSONSerializer;
 import io.netty.buffer.ByteBuf;
@@ -33,6 +30,10 @@ public class PacketCodeC {
         packetTypeMap.put(Command.LOGIN_RESPONSE, LoginResponsePacket.class);
         packetTypeMap.put(Command.MESSAGE_REQUEST, MessageRequestPacket.class);
         packetTypeMap.put(Command.MESSAGE_RESPONSE, MessageResponsePacket.class);
+        packetTypeMap.put(Command.LOGOUT_REQUEST, LogoutRequestPacket.class);
+        packetTypeMap.put(Command.LOGOUT_RESPONSE, LogoutResponsePacket.class);
+        packetTypeMap.put(Command.CREATE_GROUP_REQUEST, CreateGroupRequestPacket.class);
+        packetTypeMap.put(Command.CREATE_GROUP_RESPONSE, CreateGroupResponsePacket.class);
 
         serializerMap = new HashMap<>();
         Serializer serializer = new JSONSerializer();
