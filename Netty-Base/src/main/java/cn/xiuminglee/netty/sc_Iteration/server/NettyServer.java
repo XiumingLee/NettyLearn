@@ -2,7 +2,9 @@ package cn.xiuminglee.netty.sc_Iteration.server;
 
 import cn.xiuminglee.netty.sc_Iteration.codec.PacketCodecHandler;
 import cn.xiuminglee.netty.sc_Iteration.codec.Spliter;
+import cn.xiuminglee.netty.sc_Iteration.handle.IMIdleStateHandler;
 import cn.xiuminglee.netty.sc_Iteration.server.handler.AuthHandler;
+import cn.xiuminglee.netty.sc_Iteration.server.handler.HeartBeatRequestHandler;
 import cn.xiuminglee.netty.sc_Iteration.server.handler.IMHandler;
 import cn.xiuminglee.netty.sc_Iteration.server.handler.LoginRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
@@ -37,9 +39,13 @@ public class NettyServer {
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected void initChannel(NioSocketChannel ch) {
+                        // 空闲检测
+                        ch.pipeline().addLast(new IMIdleStateHandler());
                         ch.pipeline().addLast(new Spliter());
                         ch.pipeline().addLast(PacketCodecHandler.INSTANCE);
                         ch.pipeline().addLast(LoginRequestHandler.INSTANCE);
+                        // 加在这里
+                        ch.pipeline().addLast(HeartBeatRequestHandler.INSTANCE);
                         ch.pipeline().addLast(AuthHandler.INSTANCE);
                         ch.pipeline().addLast(IMHandler.INSTANCE);;
                     }
