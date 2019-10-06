@@ -3,6 +3,7 @@ package cn.xiuminglee.netty.sc_Iteration.server.handler;
 import cn.xiuminglee.netty.sc_Iteration.protocol.packet.JoinGroupRequestPacket;
 import cn.xiuminglee.netty.sc_Iteration.protocol.packet.JoinGroupResponsePacket;
 import cn.xiuminglee.netty.sc_Iteration.util.SessionUtil;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
@@ -13,7 +14,13 @@ import io.netty.channel.group.ChannelGroup;
  * @Version 1.0
  * @Describe:
  */
+@ChannelHandler.Sharable
 public class JoinGroupRequestHandler extends SimpleChannelInboundHandler<JoinGroupRequestPacket> {
+    public static final JoinGroupRequestHandler INSTANCE = new JoinGroupRequestHandler();
+
+    private JoinGroupRequestHandler() {
+
+    }
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, JoinGroupRequestPacket requestPacket) {
         // 1. 获取群对应的 channelGroup，然后将当前用户的 channel 添加进去

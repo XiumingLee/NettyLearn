@@ -4,6 +4,7 @@ import cn.xiuminglee.netty.sc_Iteration.protocol.packet.LoginRequestPacket;
 import cn.xiuminglee.netty.sc_Iteration.protocol.packet.LoginResponsePacket;
 import cn.xiuminglee.netty.sc_Iteration.session.Session;
 import cn.xiuminglee.netty.sc_Iteration.util.SessionUtil;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -16,7 +17,12 @@ import java.util.UUID;
  * @Version 1.0
  * @Describe: 登录请求处理器
  */
+@ChannelHandler.Sharable
 public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginRequestPacket> {
+    public static final LoginRequestHandler INSTANCE = new LoginRequestHandler();
+
+    protected LoginRequestHandler() {
+    }
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, LoginRequestPacket loginRequestPacket) {
         // 构建响应包

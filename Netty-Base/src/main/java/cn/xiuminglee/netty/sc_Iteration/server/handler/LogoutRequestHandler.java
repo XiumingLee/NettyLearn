@@ -3,6 +3,7 @@ package cn.xiuminglee.netty.sc_Iteration.server.handler;
 import cn.xiuminglee.netty.sc_Iteration.protocol.packet.LogoutRequestPacket;
 import cn.xiuminglee.netty.sc_Iteration.protocol.packet.LogoutResponsePacket;
 import cn.xiuminglee.netty.sc_Iteration.util.SessionUtil;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -12,7 +13,13 @@ import io.netty.channel.SimpleChannelInboundHandler;
  * @Version 1.0
  * @Describe: 登出请求
  */
+@ChannelHandler.Sharable
 public class LogoutRequestHandler extends SimpleChannelInboundHandler<LogoutRequestPacket> {
+    public static final LogoutRequestHandler INSTANCE = new LogoutRequestHandler();
+
+    private LogoutRequestHandler() {
+
+    }
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, LogoutRequestPacket msg) {
