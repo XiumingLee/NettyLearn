@@ -3,6 +3,7 @@ package cn.xiuminglee.netty.sc_Iteration.util;
 import cn.xiuminglee.netty.sc_Iteration.attribute.Attributes;
 import cn.xiuminglee.netty.sc_Iteration.session.Session;
 import io.netty.channel.Channel;
+import io.netty.channel.group.ChannelGroup;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,6 +17,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SessionUtil {
     // userId -> channel 的映射
     private static final Map<String, Channel> userIdChannelMap = new ConcurrentHashMap<>();
+
+    private static final Map<String, ChannelGroup> groupIdChannelGroupMap = new ConcurrentHashMap<>();
 
     /** 会话与Channel绑定*/
     public static void bindSession(Session session, Channel channel) {
@@ -46,5 +49,14 @@ public class SessionUtil {
     /** 根据用户id获取Channel*/
     public static Channel getChannel(String userId) {
         return userIdChannelMap.get(userId);
+    }
+
+    /** 绑定群*/
+    public static void bindChannelGroup(String groupId, ChannelGroup channelGroup) {
+        groupIdChannelGroupMap.put(groupId, channelGroup);
+    }
+    /** 获取群ChannelGroup*/
+    public static ChannelGroup getChannelGroup(String groupId) {
+        return groupIdChannelGroupMap.get(groupId);
     }
 }

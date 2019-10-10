@@ -1,10 +1,7 @@
 package cn.xiuminglee.netty.sc_Iteration.protocol;
 
 import cn.xiuminglee.netty.sc_Iteration.protocol.command.Command;
-import cn.xiuminglee.netty.sc_Iteration.protocol.packet.LoginRequestPacket;
-import cn.xiuminglee.netty.sc_Iteration.protocol.packet.LoginResponsePacket;
-import cn.xiuminglee.netty.sc_Iteration.protocol.packet.MessageRequestPacket;
-import cn.xiuminglee.netty.sc_Iteration.protocol.packet.MessageResponsePacket;
+import cn.xiuminglee.netty.sc_Iteration.protocol.packet.*;
 import cn.xiuminglee.netty.sc_Iteration.serialize.Serializer;
 import cn.xiuminglee.netty.sc_Iteration.serialize.impl.JSONSerializer;
 import io.netty.buffer.ByteBuf;
@@ -33,6 +30,18 @@ public class PacketCodeC {
         packetTypeMap.put(Command.LOGIN_RESPONSE, LoginResponsePacket.class);
         packetTypeMap.put(Command.MESSAGE_REQUEST, MessageRequestPacket.class);
         packetTypeMap.put(Command.MESSAGE_RESPONSE, MessageResponsePacket.class);
+        packetTypeMap.put(Command.LOGOUT_REQUEST, LogoutRequestPacket.class);
+        packetTypeMap.put(Command.LOGOUT_RESPONSE, LogoutResponsePacket.class);
+        packetTypeMap.put(Command.CREATE_GROUP_REQUEST, CreateGroupRequestPacket.class);
+        packetTypeMap.put(Command.CREATE_GROUP_RESPONSE, CreateGroupResponsePacket.class);
+        packetTypeMap.put(Command.JOIN_GROUP_RESPONSE, JoinGroupResponsePacket.class);
+        packetTypeMap.put(Command.JOIN_GROUP_REQUEST, JoinGroupRequestPacket.class);
+        packetTypeMap.put(Command.QUIT_GROUP_REQUEST, QuitGroupRequestPacket.class);
+        packetTypeMap.put(Command.QUIT_GROUP_RESPONSE, QuitGroupResponsePacket.class);
+        packetTypeMap.put(Command.LIST_GROUP_MEMBERS_REQUEST, ListGroupMembersRequestPacket.class);
+        packetTypeMap.put(Command.LIST_GROUP_MEMBERS_RESPONSE, ListGroupMembersResponsePacket.class);
+        packetTypeMap.put(Command.GROUP_MESSAGE_REQUEST, GroupMessageRequestPacket.class);
+        packetTypeMap.put(Command.GROUP_MESSAGE_RESPONSE, GroupMessageResponsePacket.class);
 
         serializerMap = new HashMap<>();
         Serializer serializer = new JSONSerializer();
