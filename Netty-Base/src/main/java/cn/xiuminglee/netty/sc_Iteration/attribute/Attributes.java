@@ -1,5 +1,6 @@
 package cn.xiuminglee.netty.sc_Iteration.attribute;
 
+import cn.xiuminglee.netty.sc_Iteration.session.Session;
 import io.netty.util.AttributeKey;
 
 /**
@@ -9,6 +10,5 @@ import io.netty.util.AttributeKey;
  * @Describe: 标志属性枚举。
  */
 public interface Attributes {
-    /** 已登录的标志*/
-    AttributeKey<Boolean> LOGIN = AttributeKey.newInstance("login");
+    AttributeKey<Session> SESSION = AttributeKey.newInstance("session");
 }

@@ -3,6 +3,7 @@ package cn.xiuminglee.netty.sc_Iteration.server;
 import cn.xiuminglee.netty.sc_Iteration.codec.PacketDecoder;
 import cn.xiuminglee.netty.sc_Iteration.codec.PacketEncoder;
 import cn.xiuminglee.netty.sc_Iteration.codec.Spliter;
+import cn.xiuminglee.netty.sc_Iteration.server.handler.AuthHandler;
 import cn.xiuminglee.netty.sc_Iteration.server.handler.LoginRequestHandler;
 import cn.xiuminglee.netty.sc_Iteration.server.handler.MessageRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
@@ -40,6 +41,8 @@ public class NettyServer {
                         ch.pipeline().addLast(new Spliter());
                         ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new LoginRequestHandler());
+                        // 新增加用户认证handler
+                        ch.pipeline().addLast(new AuthHandler());
                         ch.pipeline().addLast(new MessageRequestHandler());
                         ch.pipeline().addLast(new PacketEncoder());
                     }

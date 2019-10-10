@@ -9,7 +9,7 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
  * @Author: Xiuming Lee
  * @Date: 2019/8/12 19:21
  * @Version 1.0
- * @Describe:
+ * @Describe: 拒绝非本协议连接
  */
 public class Spliter extends LengthFieldBasedFrameDecoder {
     private static final int LENGTH_FIELD_OFFSET = 7;
@@ -22,7 +22,9 @@ public class Spliter extends LengthFieldBasedFrameDecoder {
 
     @Override
     protected Object decode(ChannelHandlerContext ctx, ByteBuf in) throws Exception {
+        // 屏蔽非本协议的客户端
         if (in.getInt(in.readerIndex()) != PacketCodeC.MAGIC_NUMBER) {
+            // 不符合我们定义的协议格式，关闭连接。
             ctx.channel().close();
             return null;
         }
